@@ -1,0 +1,22 @@
+- WiredTiger là một NoSQL, nền tảng có thể mở rộng Mã nguồn mở để quản lý dữ liệu. Nó được phát hành theo phiên bản
+2 hoặc 3 của Giấy phép Công cộng GNU. WiredTiger sử dụng kiến ​​trúc MultiVersion Concurrency Control. MongoDB mua lại WiredTiger Inc. vào ngày 16 tháng 12 năm 2014
+
+- MongoDB dùng Locking với concurrency control để đảm bảo tính ổn định (optimistic => có conflict thì abort và retry,
+pessimistic => block toàn bộ những cái tác vụ mà có khả năng gây ra conflict, kể cả khi có thể chúng
+k phải)
+
+- MongoDB dùng multi-granularity locking để đảm bảo rằng các tác vụ lock ở mức global, database
+hoặc ở collection (collection là 1 tệp những thuộc tính có cùng kiểu dữ liệu)
+MongoDB còn cho phép storage engines của nó có tự thực hiện concurrency control ở dưới
+cái collection level
+
+- Cụ thể hơn về multi-granularity: là nó theo cái optimistic concur control, chỉ khi nào mà phát hiện
+conflict giữa 2 tác vụ, thì 1 trong số chúng sẽ thông báo 1 cái write conflict và MongoDB
+sẽ thực hiện lại tác vụ đó.
+Với 1 vài tác vụ ngắn ở tầm vực global mà liên quan tới nhiều databases thì mongodb
+vẫn sẽ dùng instance-wide lock (lock toàn bộ MongoDB Server để xử lý chỉ một write query ở cùng một thời điểm).
+Một vài tác vụ khác như collMod (modify lại cái collection hoặc định nghĩa lại view) thì vẫn cần 1 cái exclusive lock cho database
+
+-MongoDB dùng reader-writer locks để đảm bảo các reader có quyền truy cập tài nguyên như là database hoặc collection
+một cách tuần tự
+
