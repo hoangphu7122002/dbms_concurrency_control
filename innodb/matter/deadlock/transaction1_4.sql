@@ -1,0 +1,7 @@
+SET autocommit = 0;
+START TRANSACTION;
+BEGIN;
+SELECT * FROM table2 WHERE id = 2; 
+DO SLEEP(10);
+SELECT * FROM table1 WHERE id = 1;
+COMMIT;
