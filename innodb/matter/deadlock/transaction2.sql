@@ -1,3 +1,5 @@
+USE dbms_assignment;
+
 SET autocommit = 0;
 START TRANSACTION;
 BEGIN;
